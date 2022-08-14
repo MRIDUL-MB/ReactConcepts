@@ -1,49 +1,61 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, CardBody, CardTitle, Card } from 'reactstrap';
+import React, { useState } from 'react';
+import { Container, Row, Col } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-import Axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import BuyPage from './Tutorial/Cart/components/BuyPage';
+import Cart from './Tutorial/Cart/components/Cart';
 
 function App() {
-  const [details, setDetails] = useState({});
-  const fetchDetails = async () => {
-    const { data } = await Axios.get('https://randomuser.me/api');
-    const details = data.results[0];
-    setDetails(details);
+  const [cartItem, setCartItem] = useState([]);
+
+  const addInCart = (item) => {
+    const isAddedAlready = cartItem.findIndex((arr) => arr.id === item.id);
+
+    if (isAddedAlready !== -1) {
+      toast('Item is Alreay Added', {
+        type: 'error',
+      });
+      return;
+    }
+    toast('Item added Successfully', {
+      type: 'success',
+    });
+    setCartItem([...cartItem, item]);
   };
 
-  useEffect(() => {
-    fetchDetails();
-  }, []);
+  const buyItem = () => {
+    setCartItem([]);
+    toast('Succesfully Buy', {
+      type: 'success',
+    });
+  };
 
-  const MyCard = () => {
-    return (
-      <Card>
-        <CardBody className='text-center'>
-          <img
-            className='rounded-circle img-thumbnail border-danger'
-            height='150'
-            width='150'
-            src={details.picture?.large}
-            alt=''
-          />
-          <CardTitle className='text-primary'>
-            <h1>
-              <span className='pr-2'>{details.name?.title}</span>
-              <span className='pr-2'>{details.name?.first}</span>
-              <span className='pr-2'>{details.name?.last}</span>
-            </h1>
-          </CardTitle>
-        </CardBody>
-      </Card>
-    );
+  const removeItem = (item) => {
+    setCartItem(cartItem.filter((arr) => arr.id !== item.id));
+    toast('Succesfully Removed', {
+      type: 'success',
+    });
   };
 
   return (
-    <Container fluid className='p-4 bg-primary App'>
+    <Container fluid>
       <Row>
-        <Col md={4} className='offset-md-4 mt-4'>
-          <MyCard />
+        <Col md={8}>
+          <BuyPage addInCart={addInCart} />
+        </Col>
+        <Col>
+          {cartItem.length == 0 ? (
+            <h1 className='text-center mt-5'>Cart Is Empty</h1>
+          ) : (
+            <Cart
+              cartItem={cartItem}
+              removeItem={removeItem}
+              buyItem={buyItem}
+            />
+          )}
+          <ToastContainer />
         </Col>
       </Row>
     </Container>
