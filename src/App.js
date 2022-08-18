@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import { Container, Row, Col } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 import { initializeApp } from 'firebase/app';
 import 'firebase/auth';
 import firebaseConfig from './Tutorial/firebase-git/Config/firebaseConfig';
@@ -14,13 +12,13 @@ import SignIn from './Tutorial/firebase-git/pages/SignIn';
 import SignUp from './Tutorial/firebase-git/pages/SignUp';
 import PageNotFound from './Tutorial/firebase-git/pages/PageNotFound';
 
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { UserContext } from './Tutorial/firebase-git/context/UserContext';
 
 import Footer from './Tutorial/firebase-git/layout/Footer';
 import Header from './Tutorial/firebase-git/layout/Header';
 
-const app = initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
 
 function App() {
   const [user, setUser] = useState(null);

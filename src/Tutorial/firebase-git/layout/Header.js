@@ -14,7 +14,6 @@ import { UserContext } from '../context/UserContext';
 
 function Header() {
   const context = useContext(UserContext);
-  console.log(context);
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -30,7 +29,13 @@ function Header() {
         <Nav navbar className='ms-auto me-3'>
           {context.user ? (
             <NavItem>
-              <NavLink tag={Link} to='/' className='text-white ps-3'>
+              <NavLink
+                onClick={() => {
+                  context.setUser(null);
+                }}
+                className='text-white ps-3'
+                role='button'
+              >
                 Sign Out
               </NavLink>
             </NavItem>
